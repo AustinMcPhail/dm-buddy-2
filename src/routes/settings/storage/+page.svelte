@@ -2,11 +2,7 @@
 	import { onMount } from 'svelte';
 	import PageLayout from '../../../components/common/PageLayout/PageLayout.svelte';
 	import Toolbar from '../../../components/toolbar/Toolbar.svelte';
-	import {
-		downloadAllData,
-		downloadData,
-		uploadAllData
-	} from '../../../utilities/helpers/dataManager';
+	import { downloadAllData, uploadDataToCloud } from '../../../utilities/helpers/dataManager';
 
 	const storageValues = {
 		characters: 0,
@@ -58,6 +54,13 @@
 				on:click={() => {
 					downloadAllData();
 				}}>Download Data</button
+			>
+			<button
+				type="button"
+				class="bg-green-600 px-2 rounded-sm"
+				on:click={() => {
+					uploadDataToCloud();
+				}}>Save Data to Cloud</button
 			>
 			<input
 				type="file"

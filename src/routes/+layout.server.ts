@@ -1,7 +1,9 @@
-import type { LayoutServerLoad } from "./$types"
+import { getUsers } from '../db/db';
+import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
-  return {
-    session: await event.locals.getSession(),
-  }
-}
+	const example = await getUsers();
+	return {
+		session: await event.locals.getSession()
+	};
+};

@@ -2,7 +2,6 @@
 
 import type { Character } from '../charHelper';
 import type { NPC } from '../npcHelper/npcHelper';
-import type { Settlement } from '../settlementHelper';
 
 //save
 export const saveData = (key: string, data: any): void => {
@@ -53,12 +52,37 @@ export const downloadAllData = (): void => {
 		npcs: loadData('npcs'),
 		characters: loadData('characters'),
 		settlements: loadData('settlements'),
-		campaign: loadData('campaign'),
+		campaigns: loadData('campaigns'),
 		quests: loadData('quests'),
-		session: loadData('session')
+		sessions: loadData('sessions')
 	};
 	downloadData(data, 'dm-tool-data.json');
 };
+
+export const uploadDataToCloud = (): void => {
+	const data = {
+		npcs: loadData('npcs'),
+		characters: loadData('characters'),
+		settlements: loadData('settlements'),
+		campaigns: loadData('campaigns'),
+		quests: loadData('quests'),
+		sessions: loadData('sessions')
+	};
+	fetch('/api/data', {
+		method: 'POST',
+		body: JSON.stringify({
+			campaigns: data.campaigns,
+			npcs: data.npcs,
+			characters: data.characters,
+			settlements: data.settlements,
+			quests: data.quests,
+			sessions: data.sessions
+		})
+	})
+		.then((res) => res.json())
+		.then((data) => console.log({ data }));
+};
+
 export const uploadAllData = (file: File): void => {
 	console.log('uploading file', file);
 

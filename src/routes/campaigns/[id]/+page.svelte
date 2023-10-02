@@ -1,20 +1,18 @@
 <script lang="ts">
-	import PageLayout from '../../../components/common/PageLayout/PageLayout.svelte';
-	import Toolbar from '../../../components/toolbar/Toolbar.svelte';
 	import { goto } from '$app/navigation';
+	import PageLayout from '../../../components/common/PageLayout/PageLayout.svelte';
 	import CampaignWiki from '../../../components/common/WikiPage/CampaignWiki.svelte';
+	import CharWikiPage from '../../../components/common/WikiPage/CharWikiPage.svelte';
+	import DeleteBanner from '../../../components/common/deleteBanner/DeleteBanner.svelte';
+	import Toolbar from '../../../components/toolbar/Toolbar.svelte';
+	import CharCreate from '../../../pages/CharCreate/index.svelte';
 	import {
-		deleteCampaign,
 		getCampaign,
 		newCampaign,
-		removeAllQuestsFromCampaign,
-		removeAllSessionsFromCampaign,
-		saveCampaign
+		saveCampaign,
+		type Campaign
 	} from '../../../utilities/helpers/campaignHelper';
-	import DeleteBanner from '../../../components/common/deleteBanner/DeleteBanner.svelte';
-	import CharWikiPage from '../../../components/common/WikiPage/CharWikiPage.svelte';
-	import { getCharacter, saveCharacter } from '../../../utilities/helpers/dataManager';
-	import CharCreate from '../../../pages/CharCreate/index.svelte';
+	import { getCharacter } from '../../../utilities/helpers/dataManager';
 
 	export let data;
 
@@ -37,6 +35,15 @@
 		toggleMod = true;
 	};
 	let charViewType: 'wiki' | 'sheet' = 'wiki';
+
+	function save(campaign: Campaign) {
+		fetch('/api/campaigns', {
+			method: 'POST',
+			body: JSON.stringify(campaign)
+		})
+			.then((res) => res.json())
+			.then((data) => console.log({ data }));
+	}
 </script>
 
 <PageLayout>
@@ -109,7 +116,7 @@
 				<DeleteBanner
 					{deleteWarning}
 					deleteModule={() => {
-						deleteCampaign(campaign.id);
+						// deleteCampaign(campaign.id);
 						deleteWarning = false;
 						goto(`/campaigns/`);
 					}}
@@ -178,6 +185,7 @@
 						type="button"
 						class="border border-green-500 rounded-sm px-4 text-sm"
 						on:click={() => {
+							// console.log({ campaign });
 							const id = saveCampaign(campaign);
 							goto(`/campaigns/${id}`);
 							editMode = !editMode;
@@ -228,7 +236,7 @@
 			<DeleteBanner
 				bind:deleteWarning
 				deleteModule={() => {
-					deleteCampaign(campaign.id);
+					// deleteCampaign(campaign.id);
 					deleteWarning = false;
 					goto(`/campaigns/`);
 				}}

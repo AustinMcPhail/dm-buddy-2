@@ -7,8 +7,9 @@
 	import Toolbar from '../../../components/toolbar/Toolbar.svelte';
 	import { deleteNPC, getNPC, updateNPC } from '../../../utilities/helpers/dataManager';
 	import {
+		handleNPCPromptInput,
 		newEmptyNPC,
-		handleNPCPromptInput
+		type NPC
 	} from '../../../utilities/helpers/npcHelper/npcHelper';
 	import {
 		generateQuickNPCPrompt,
@@ -24,6 +25,15 @@
 
 	let promptInput = '';
 	let deleteWarning = false;
+
+	function saveToCloud(npc: NPC) {
+		fetch('/api/npcs', {
+			method: 'POST',
+			body: JSON.stringify(npc)
+		})
+			.then((res) => res.json())
+			.then((data) => console.log({ data }));
+	}
 </script>
 
 <PageLayout>
@@ -40,6 +50,14 @@
 				type="button"
 				class="
                 border border-green-500 rounded-md w-full hover:bg-green-400">Save</button
+			>
+			<button
+				on:click={() => {
+					saveToCloud(npc);
+				}}
+				type="button"
+				class="
+                border border-green-500 rounded-md w-full hover:bg-green-400">Save to Cloud</button
 			>
 			<button
 				on:click={() => {
